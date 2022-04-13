@@ -42,7 +42,7 @@ type Metadata struct {
 	*table.Metadata
 }
 
-func New(m table.Metadata) *Table {
+func New(m table.Metadata) ITable {
 	gocqlxTable := table.New(m)
 	return &Table{
 		gocqlxTable,

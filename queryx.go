@@ -50,5 +50,5 @@ type IQueryx interface {
 }
 
 type Queryx struct {
-	*gocqlx.Queryx
+	q *gocqlx.Queryx
 }
