@@ -15,16 +15,16 @@ func Test_Metadata(t *testing.T) {
 		partKey := []string{"first_name", "last_name"}
 
 		metadata := Metadata{
-			&table.Metadata{
+			M: &table.Metadata{
 				Name:    name,
 				Columns: columns,
 				PartKey: partKey,
 			},
 		}
 
-		assert.Equal(t, metadata.Name, name)
-		assert.Equal(t, metadata.Columns, columns)
-		assert.Equal(t, metadata.PartKey, partKey)
+		assert.Equal(t, metadata.M.Name, name)
+		assert.Equal(t, metadata.M.Columns, columns)
+		assert.Equal(t, metadata.M.PartKey, partKey)
 	})
 }
 
@@ -36,17 +36,17 @@ func Test_Table(t *testing.T) {
 		partKey := []string{"first_name", "last_name"}
 
 		metadata := Metadata{
-			&table.Metadata{
+			M: &table.Metadata{
 				Name:    name,
 				Columns: columns,
 				PartKey: partKey,
 			},
 		}
 
-		tableTest := New(*metadata.Metadata)
+		tableTest := New(*metadata.M)
 
-		assert.Equal(t, tableTest.Metadata().Name, name)
-		assert.Equal(t, tableTest.Metadata().Columns, columns)
-		assert.Equal(t, tableTest.Metadata().PartKey, partKey)
+		assert.Equal(t, tableTest.Metadata().M.Name, name)
+		assert.Equal(t, tableTest.Metadata().M.Columns, columns)
+		assert.Equal(t, tableTest.Metadata().M.PartKey, partKey)
 	})
 }
