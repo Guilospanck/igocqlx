@@ -47,14 +47,14 @@ func (s *Session) Close() {
 	s.S.Close()
 }
 
-func NewSession(session *gocql.Session) *Session {
+func NewSession(session *gocql.Session) ISessionx {
 	gocqlxSession := gocqlx.NewSession(session)
 	return &Session{
 		&gocqlxSession,
 	}
 }
 
-func WrapSession(session *gocql.Session, err error) (*Session, error) {
+func WrapSession(session *gocql.Session, err error) (ISessionx, error) {
 	gocqlxSession, wrapErr := gocqlx.WrapSession(session, err)
 
 	return &Session{
