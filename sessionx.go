@@ -19,10 +19,17 @@ type Session struct {
 	*gocqlx.Session
 }
 
-func NewSession(session *gocql.Session) gocqlx.Session {
-	return gocqlx.NewSession(session)
+func NewSession(session *gocql.Session) Session {
+	gocqlxSession := gocqlx.NewSession(session)
+	return Session{
+		&gocqlxSession,
+	}
 }
 
-func WrapSession(session *gocql.Session, err error) (gocqlx.Session, error) {
-	return gocqlx.WrapSession(session, err)
+func WrapSession(session *gocql.Session, err error) (Session, error) {
+	gocqlxSession, wrapErr := gocqlx.WrapSession(session, err)
+
+	return Session{
+		&gocqlxSession,
+	}, wrapErr
 }
