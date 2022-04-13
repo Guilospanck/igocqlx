@@ -7,11 +7,8 @@ import (
 	"github.com/scylladb/gocqlx/v2"
 )
 
-// Transformer transforms the value of the named parameter to another value.
-type Transformer func(name string, val interface{}) interface{}
-
 type IQueryx interface {
-	WithBindTransformer(tr Transformer) IQueryx
+	WithBindTransformer(tr gocqlx.Transformer) IQueryx
 	BindStruct(arg interface{}) IQueryx
 	BindStructMap(arg0 interface{}, arg1 map[string]interface{}) IQueryx
 	bindStructArgs(arg0 interface{}, arg1 map[string]interface{}) ([]interface{}, error)
