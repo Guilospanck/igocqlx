@@ -1,0 +1,2 @@
+# igocqlx
+Gocqlx with interfaces.
