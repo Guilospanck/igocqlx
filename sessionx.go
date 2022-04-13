@@ -16,48 +16,48 @@ type ISessionx interface {
 }
 
 type Session struct {
-	s *gocqlx.Session
+	S *gocqlx.Session
 }
 
-func (s Session) ContextQuery(ctx context.Context, stmt string, names []string) IQueryx {
-	queryx := s.s.ContextQuery(ctx, stmt, names)
+func (s *Session) ContextQuery(ctx context.Context, stmt string, names []string) IQueryx {
+	queryx := s.S.ContextQuery(ctx, stmt, names)
 
-	return Queryx{
-		q: queryx,
+	return &Queryx{
+		Q: queryx,
 	}
 }
 
-func (s Session) Query(stmt string, names []string) IQueryx {
-	queryx := s.s.Query(stmt, names)
+func (s *Session) Query(stmt string, names []string) IQueryx {
+	queryx := s.S.Query(stmt, names)
 
-	return Queryx{
-		q: queryx,
+	return &Queryx{
+		Q: queryx,
 	}
 }
 
-func (s Session) ExecStmt(stmt string) error {
-	return s.s.ExecStmt(stmt)
+func (s *Session) ExecStmt(stmt string) error {
+	return s.S.ExecStmt(stmt)
 }
 
-func (s Session) AwaitSchemaAgreement(ctx context.Context) error {
-	return s.s.AwaitSchemaAgreement(ctx)
+func (s *Session) AwaitSchemaAgreement(ctx context.Context) error {
+	return s.S.AwaitSchemaAgreement(ctx)
 }
 
-func (s Session) Close() {
-	s.s.Close()
+func (s *Session) Close() {
+	s.S.Close()
 }
 
-func NewSession(session *gocql.Session) ISessionx {
+func NewSession(session *gocql.Session) *Session {
 	gocqlxSession := gocqlx.NewSession(session)
-	return Session{
+	return &Session{
 		&gocqlxSession,
 	}
 }
 
-func WrapSession(session *gocql.Session, err error) (ISessionx, error) {
+func WrapSession(session *gocql.Session, err error) (*Session, error) {
 	gocqlxSession, wrapErr := gocqlx.WrapSession(session, err)
 
-	return Session{
+	return &Session{
 		&gocqlxSession,
 	}, wrapErr
 }

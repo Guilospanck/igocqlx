@@ -1,8 +1,6 @@
 package igocqlx
 
 import (
-	"reflect"
-
 	"github.com/scylladb/gocqlx/v2"
 )
 
@@ -10,21 +8,54 @@ type IIterx interface {
 	Unsafe() IIterx
 	StructOnly() IIterx
 	Get(dest interface{}) error
-	scanAny(dest interface{}) bool
 	Select(dest interface{}) error
-	scanAll(dest interface{}) bool
-	isScannable(t reflect.Type) bool
-	scan(value reflect.Value) bool
 	StructScan(dest interface{}) bool
-	structScan(value reflect.Value) bool
-	fieldsByTraversal(value reflect.Value, traversals [][]int, values []interface{}) error
 	Scan(dest ...interface{}) bool
 	Close() error
-	checkErrAndNotFound() error
 
 	MapScan(m map[string]interface{}) bool
 }
 
 type Iterx struct {
-	*gocqlx.Iterx
+	I *gocqlx.Iterx
+}
+
+func (i *Iterx) Unsafe() IIterx {
+	iterx := i.I.Unsafe()
+
+	i.I = iterx
+
+	return i
+}
+
+func (i *Iterx) StructOnly() IIterx {
+	iterx := i.I.StructOnly()
+
+	i.I = iterx
+
+	return i
+}
+
+func (i *Iterx) Get(dest interface{}) error {
+	return i.I.Get(dest)
+}
+
+func (i *Iterx) Select(dest interface{}) error {
+	return i.I.Select(dest)
+}
+
+func (i *Iterx) StructScan(dest interface{}) bool {
+	return i.I.StructScan(dest)
+}
+
+func (i *Iterx) Scan(dest ...interface{}) bool {
+	return i.I.Scan(dest)
+}
+
+func (i *Iterx) Close() error {
+	return i.I.Close()
+}
+
+func (i *Iterx) MapScan(m map[string]interface{}) bool {
+	return i.I.MapScan(m)
 }
