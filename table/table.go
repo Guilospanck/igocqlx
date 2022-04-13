@@ -37,3 +37,11 @@ type ITable interface {
 type Table struct {
 	*table.Table
 }
+
+type Metadata struct {
+	*table.Metadata
+}
+
+func New(m table.Metadata) *table.Table {
+	return table.New(m)
+}
