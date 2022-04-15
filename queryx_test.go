@@ -39,9 +39,11 @@ func Test_Queryx_WithBindTransformer(t *testing.T) {
 	t.Run("Should call WithBindTransformer and perform right actions", func(t *testing.T) {
 		// arrange
 		sut := makeQueryxStruct()
+		arg := makeArg()
 
 		// act
 		result := sut.query.WithBindTransformer(sut.tr)
+		args, err := result.(*Queryx).bindStructArgs(arg, nil)
 
 		/* Getting private field from struct */
 		queryInsideResult := result.(*Queryx).Q
@@ -51,10 +53,12 @@ func Test_Queryx_WithBindTransformer(t *testing.T) {
 		// assert
 		assert.IsType(t, sut.tr, unexportedTr)
 		assert.Equal(t, sut.query, result)
+
+		assert.NoError(t, err)
+		assert.Equal(t, makeArgArrayInterface(), args)
 	})
 }
 
-// https://github.com/scylladb/gocqlx/blob/master/queryx_test.go
 func Test_Queryx_BindStruct(t *testing.T) {
 	t.Run("Should call Test_Queryx_BindStruct and perform right actions", func(t *testing.T) {
 		// arrange
