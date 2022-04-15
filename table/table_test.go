@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/Guilospanck/igocqlx"
+	igocqlxqb "github.com/Guilospanck/igocqlx/qb"
 	"github.com/gocql/gocql"
 	"github.com/scylladb/gocqlx/v2"
 	"github.com/scylladb/gocqlx/v2/table"
@@ -142,6 +143,288 @@ func Test_Table_GetQueryContext(t *testing.T) {
 
 		// assert
 		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
+	})
+}
+
+func Test_Table_Select(t *testing.T) {
+	t.Run("Should return the right Select", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		columns := makeGocqlxMetadataSut().columns
+		expectedStmt, expectedNames := table.T.Select(columns...)
+
+		// act
+		resultStmt, resultNames := table.Select(columns...)
+
+		// assert
+		assert.Equal(t, expectedStmt, resultStmt)
+		assert.Equal(t, expectedNames, resultNames)
+	})
+}
+
+func Test_Table_SelectQuery(t *testing.T) {
+	t.Run("Should return the right SelectQuery", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		columns := makeGocqlxMetadataSut().columns
+		session := makeSessionSut()
+		expectedQueryx := table.T.SelectQuery(*session.session.S, columns...)
+
+		// act
+		resultQueryx := table.SelectQuery(session.session, columns...)
+
+		// assert
+		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
+	})
+}
+
+func Test_Table_SelectQueryContext(t *testing.T) {
+	t.Run("Should return the right SelectQueryContext", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		columns := makeGocqlxMetadataSut().columns
+		session := makeSessionSut()
+		ctx := context.Background()
+		expectedQueryx := table.T.SelectQueryContext(ctx, *session.session.S, columns...)
+
+		// act
+		resultQueryx := table.SelectQueryContext(ctx, session.session, columns...)
+
+		// assert
+		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
+	})
+}
+
+func Test_Table_SelectBuilder(t *testing.T) {
+	t.Run("Should return the right SelectBuilder", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		columns := makeGocqlxMetadataSut().columns
+		expectedSB := table.T.SelectBuilder(columns...)
+
+		// act
+		resultSB := table.SelectBuilder(columns...)
+
+		// assert
+		assert.Equal(t, expectedSB, resultSB.(*igocqlxqb.SelectBuilder).SB)
+	})
+}
+
+func Test_Table_SelectAll(t *testing.T) {
+	t.Run("Should return the right SelectAll", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		expectedStmt, expectedNames := table.T.SelectAll()
+
+		// act
+		resultStmt, resultNames := table.SelectAll()
+
+		// assert
+		assert.Equal(t, expectedStmt, resultStmt)
+		assert.Equal(t, expectedNames, resultNames)
+	})
+}
+
+func Test_Table_Insert(t *testing.T) {
+	t.Run("Should return the right Insert", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		expectedStmt, expectedNames := table.T.Insert()
+
+		// act
+		resultStmt, resultNames := table.Insert()
+
+		// assert
+		assert.Equal(t, expectedStmt, resultStmt)
+		assert.Equal(t, expectedNames, resultNames)
+	})
+}
+
+func Test_Table_InsertQuery(t *testing.T) {
+	t.Run("Should return the right InsertQuery", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		session := makeSessionSut()
+		expectedQueryx := table.T.InsertQuery(*session.session.S)
+
+		// act
+		resultQueryx := table.InsertQuery(session.session)
+
+		// assert
+		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
+	})
+}
+
+func Test_Table_InsertQueryContext(t *testing.T) {
+	t.Run("Should return the right InsertQueryContext", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		session := makeSessionSut()
+		ctx := context.Background()
+		expectedQueryx := table.T.InsertQueryContext(ctx, *session.session.S)
+
+		// act
+		resultQueryx := table.InsertQueryContext(ctx, session.session)
+
+		// assert
+		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
+	})
+}
+
+func Test_Table_InsertBuilder(t *testing.T) {
+	t.Run("Should return the right InsertBuilder", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		expectedBuilder := table.T.InsertBuilder()
+
+		// act
+		resultBuilder := table.InsertBuilder()
+
+		// assert
+		assert.Equal(t, expectedBuilder, resultBuilder.(*igocqlxqb.InsertBuilder).IB)
+	})
+}
+
+func Test_Table_Update(t *testing.T) {
+	t.Run("Should return the right Update", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		columns := makeGocqlxMetadataSut().columns
+		expectedStmt, expectedNames := table.T.Update(columns...)
+
+		// act
+		resultStmt, resultNames := table.Update(columns...)
+
+		// assert
+		assert.Equal(t, expectedStmt, resultStmt)
+		assert.Equal(t, expectedNames, resultNames)
+	})
+}
+
+func Test_Table_UpdateQuery(t *testing.T) {
+	t.Run("Should return the right UpdateQuery", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		columns := makeGocqlxMetadataSut().columns
+		session := makeSessionSut()
+		expectedQueryx := table.T.UpdateQuery(*session.session.S, columns...)
+
+		// act
+		resultQueryx := table.UpdateQuery(session.session, columns...)
+
+		// assert
+		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
+	})
+}
+
+func Test_Table_UpdateQueryContext(t *testing.T) {
+	t.Run("Should return the right UpdateQueryContext", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		columns := makeGocqlxMetadataSut().columns
+		session := makeSessionSut()
+		ctx := context.Background()
+		expectedQueryx := table.T.UpdateQueryContext(ctx, *session.session.S, columns...)
+
+		// act
+		resultQueryx := table.UpdateQueryContext(ctx, session.session, columns...)
+
+		// assert
+		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
+	})
+}
+
+func Test_Table_UpdateBuilder(t *testing.T) {
+	t.Run("Should return the right UpdateBuilder", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		expectedBuilder := table.T.UpdateBuilder()
+
+		// act
+		resultBuilder := table.UpdateBuilder()
+
+		// assert
+		assert.Equal(t, expectedBuilder, resultBuilder.(*igocqlxqb.UpdateBuilder).UB)
+	})
+}
+
+func Test_Table_Delete(t *testing.T) {
+	t.Run("Should return the right Delete", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		columns := makeGocqlxMetadataSut().columns
+		expectedStmt, expectedNames := table.T.Delete(columns...)
+
+		// act
+		resultStmt, resultNames := table.Delete(columns...)
+
+		// assert
+		assert.Equal(t, expectedStmt, resultStmt)
+		assert.Equal(t, expectedNames, resultNames)
+	})
+}
+
+func Test_Table_DeleteQuery(t *testing.T) {
+	t.Run("Should return the right DeleteQuery", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		columns := makeGocqlxMetadataSut().columns
+		session := makeSessionSut()
+		expectedQueryx := table.T.DeleteQuery(*session.session.S, columns...)
+
+		// act
+		resultQueryx := table.DeleteQuery(session.session, columns...)
+
+		// assert
+		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
+	})
+}
+
+func Test_Table_DeleteQueryContext(t *testing.T) {
+	t.Run("Should return the right DeleteQueryContext", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		columns := makeGocqlxMetadataSut().columns
+		session := makeSessionSut()
+		ctx := context.Background()
+		expectedQueryx := table.T.DeleteQueryContext(ctx, *session.session.S, columns...)
+
+		// act
+		resultQueryx := table.DeleteQueryContext(ctx, session.session, columns...)
+
+		// assert
+		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
+	})
+}
+
+func Test_Table_DeleteBuilder(t *testing.T) {
+	t.Run("Should return the right DeleteBuilder", func(t *testing.T) {
+		// arrange
+		sut := makeTableSut()
+		table := sut.tableUnderTest
+		expectedBuilder := table.T.DeleteBuilder()
+
+		// act
+		resultBuilder := table.DeleteBuilder()
+
+		// assert
+		assert.Equal(t, expectedBuilder, resultBuilder.(*igocqlxqb.DeleteBuilder).DB)
 	})
 }
 
