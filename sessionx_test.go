@@ -47,40 +47,6 @@ func Test_Sessionx_Query(t *testing.T) {
 	})
 }
 
-// func Test_Sessionx_ExecStmt(t *testing.T) {
-// 	t.Run("Should return right ExecStmt", func(t *testing.T) {
-// 		// arrange
-// 		sut := MakeSessionSut()
-// 		session := sut.Session
-// 		stmt := `INSERT INTO tracking_data (first_name,last_name,location) VALUES (?,?,?) `
-
-// 		expectedExecStmt := session.S.ExecStmt(stmt)
-
-// 		// act
-// 		resultExecStmt := session.ExecStmt(stmt)
-
-// 		// assert
-// 		assert.Equal(t, expectedExecStmt, resultExecStmt)
-// 	})
-// }
-
-// func Test_Sessionx_AwaitSchemaAgreement(t *testing.T) {
-// 	t.Run("Should return right AwaitSchemaAgreement", func(t *testing.T) {
-// 		// arrange
-// 		sut := MakeSessionSut()
-// 		session := sut.Session
-// 		ctx := context.Background()
-
-// 		expectedAwaitSchemaAgreement := session.S.AwaitSchemaAgreement(ctx)
-
-// 		// act
-// 		resultAwaitSchemaAgreement := session.AwaitSchemaAgreement(ctx)
-
-// 		// assert
-// 		assert.Equal(t, expectedAwaitSchemaAgreement, resultAwaitSchemaAgreement)
-// 	})
-// }
-
 func Test_Sessionx_Close(t *testing.T) {
 	t.Run("Should return right Close", func(t *testing.T) {
 		// arrange
