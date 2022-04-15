@@ -1,4 +1,4 @@
-# igocqlx [![Go Report Card](https://goreportcard.com/badge/github.com/Guilospanck/igocqlx)](https://goreportcard.com/report/github.com/Guilospanck/igocqlx) [![CircleCI](https://circleci.com/gh/Guilospanck/igocqlx/tree/main.svg?style=svg)](https://circleci.com/gh/Guilospanck/igocqlx/tree/main) [![codecov](https://codecov.io/gh/Guilospanck/igocqlx/branch/main/graph/badge.svg?token=WTY8VZTGD0)](https://codecov.io/gh/Guilospanck/igocqlx)
+# igocqlx [![Go Report Card](https://goreportcard.com/badge/github.com/Guilospanck/igocqlx)](https://goreportcard.com/report/github.com/Guilospanck/igocqlx) [![CircleCI](https://circleci.com/gh/Guilospanck/igocqlx/tree/main.svg?style=svg)](https://circleci.com/gh/Guilospanck/igocqlx/tree/main) [![codecov](https://codecov.io/gh/Guilospanck/igocqlx/branch/main/graph/badge.svg?token=WTY8VZTGD0)](https://codecov.io/gh/Guilospanck/igocqlx) [![Go Reference](https://pkg.go.dev/badge/github.com/Guilospanck/igocqlx.svg)](https://pkg.go.dev/github.com/Guilospanck/igocqlx)
 Gocqlx with interfaces.
 
 `igocqlx` has (almost, to be continued) functions as `gocqlx` but provides interfaces to wrap functions from the package.
