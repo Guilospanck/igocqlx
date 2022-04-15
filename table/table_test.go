@@ -37,8 +37,8 @@ func Test_Table_Metadata(t *testing.T) {
 	t.Run("Should return the right Metadata", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		expectedMetadata := sut.metadataUnderTest
-		table := sut.tableUnderTest
+		expectedMetadata := sut.MetadataUnderTest
+		table := sut.TableUnderTest
 
 		// act
 		metadata := table.Metadata()
@@ -52,8 +52,8 @@ func Test_Table_New(t *testing.T) {
 	t.Run("Should return the right Table", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		expectedMetadata := sut.metadataUnderTest
-		expectedTable := sut.tableUnderTest
+		expectedMetadata := sut.MetadataUnderTest
+		expectedTable := sut.TableUnderTest
 
 		// act
 		tableTest := New(*expectedMetadata.M)
@@ -68,7 +68,7 @@ func Test_Table_PrimaryKeyCmp(t *testing.T) {
 	t.Run("Should return the right Comparator", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
+		table := sut.TableUnderTest
 		expectedCmp := table.T.PrimaryKeyCmp()
 
 		// act
@@ -83,7 +83,7 @@ func Test_Table_Name(t *testing.T) {
 	t.Run("Should return the right Name", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
+		table := sut.TableUnderTest
 		expectedName := table.T.Name()
 
 		// act
@@ -98,8 +98,8 @@ func Test_Table_Get(t *testing.T) {
 	t.Run("Should return the right Get", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
-		columns := makeGocqlxMetadataSut().columns
+		table := sut.TableUnderTest
+		columns := makeGocqlxMetadataSut().Columns
 		expectedStmt, expectedNames := table.T.Get(columns...)
 
 		// act
@@ -115,13 +115,13 @@ func Test_Table_GetQuery(t *testing.T) {
 	t.Run("Should return the right GetQuery", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
-		columns := makeGocqlxMetadataSut().columns
+		table := sut.TableUnderTest
+		columns := makeGocqlxMetadataSut().Columns
 		session := makeSessionSut()
-		expectedQueryx := table.T.GetQuery(*session.session.S, columns...)
+		expectedQueryx := table.T.GetQuery(*session.Session.S, columns...)
 
 		// act
-		resultQueryx := table.GetQuery(session.session, columns...)
+		resultQueryx := table.GetQuery(session.Session, columns...)
 
 		// assert
 		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
@@ -132,14 +132,14 @@ func Test_Table_GetQueryContext(t *testing.T) {
 	t.Run("Should return the right GetQueryContext", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
-		columns := makeGocqlxMetadataSut().columns
+		table := sut.TableUnderTest
+		columns := makeGocqlxMetadataSut().Columns
 		session := makeSessionSut()
 		ctx := context.Background()
-		expectedQueryx := table.T.GetQueryContext(ctx, *session.session.S, columns...)
+		expectedQueryx := table.T.GetQueryContext(ctx, *session.Session.S, columns...)
 
 		// act
-		resultQueryx := table.GetQueryContext(ctx, session.session, columns...)
+		resultQueryx := table.GetQueryContext(ctx, session.Session, columns...)
 
 		// assert
 		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
@@ -150,8 +150,8 @@ func Test_Table_Select(t *testing.T) {
 	t.Run("Should return the right Select", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
-		columns := makeGocqlxMetadataSut().columns
+		table := sut.TableUnderTest
+		columns := makeGocqlxMetadataSut().Columns
 		expectedStmt, expectedNames := table.T.Select(columns...)
 
 		// act
@@ -167,13 +167,13 @@ func Test_Table_SelectQuery(t *testing.T) {
 	t.Run("Should return the right SelectQuery", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
-		columns := makeGocqlxMetadataSut().columns
+		table := sut.TableUnderTest
+		columns := makeGocqlxMetadataSut().Columns
 		session := makeSessionSut()
-		expectedQueryx := table.T.SelectQuery(*session.session.S, columns...)
+		expectedQueryx := table.T.SelectQuery(*session.Session.S, columns...)
 
 		// act
-		resultQueryx := table.SelectQuery(session.session, columns...)
+		resultQueryx := table.SelectQuery(session.Session, columns...)
 
 		// assert
 		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
@@ -184,14 +184,14 @@ func Test_Table_SelectQueryContext(t *testing.T) {
 	t.Run("Should return the right SelectQueryContext", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
-		columns := makeGocqlxMetadataSut().columns
+		table := sut.TableUnderTest
+		columns := makeGocqlxMetadataSut().Columns
 		session := makeSessionSut()
 		ctx := context.Background()
-		expectedQueryx := table.T.SelectQueryContext(ctx, *session.session.S, columns...)
+		expectedQueryx := table.T.SelectQueryContext(ctx, *session.Session.S, columns...)
 
 		// act
-		resultQueryx := table.SelectQueryContext(ctx, session.session, columns...)
+		resultQueryx := table.SelectQueryContext(ctx, session.Session, columns...)
 
 		// assert
 		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
@@ -202,8 +202,8 @@ func Test_Table_SelectBuilder(t *testing.T) {
 	t.Run("Should return the right SelectBuilder", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
-		columns := makeGocqlxMetadataSut().columns
+		table := sut.TableUnderTest
+		columns := makeGocqlxMetadataSut().Columns
 		expectedSB := table.T.SelectBuilder(columns...)
 
 		// act
@@ -218,7 +218,7 @@ func Test_Table_SelectAll(t *testing.T) {
 	t.Run("Should return the right SelectAll", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
+		table := sut.TableUnderTest
 		expectedStmt, expectedNames := table.T.SelectAll()
 
 		// act
@@ -234,7 +234,7 @@ func Test_Table_Insert(t *testing.T) {
 	t.Run("Should return the right Insert", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
+		table := sut.TableUnderTest
 		expectedStmt, expectedNames := table.T.Insert()
 
 		// act
@@ -250,12 +250,12 @@ func Test_Table_InsertQuery(t *testing.T) {
 	t.Run("Should return the right InsertQuery", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
+		table := sut.TableUnderTest
 		session := makeSessionSut()
-		expectedQueryx := table.T.InsertQuery(*session.session.S)
+		expectedQueryx := table.T.InsertQuery(*session.Session.S)
 
 		// act
-		resultQueryx := table.InsertQuery(session.session)
+		resultQueryx := table.InsertQuery(session.Session)
 
 		// assert
 		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
@@ -266,13 +266,13 @@ func Test_Table_InsertQueryContext(t *testing.T) {
 	t.Run("Should return the right InsertQueryContext", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
+		table := sut.TableUnderTest
 		session := makeSessionSut()
 		ctx := context.Background()
-		expectedQueryx := table.T.InsertQueryContext(ctx, *session.session.S)
+		expectedQueryx := table.T.InsertQueryContext(ctx, *session.Session.S)
 
 		// act
-		resultQueryx := table.InsertQueryContext(ctx, session.session)
+		resultQueryx := table.InsertQueryContext(ctx, session.Session)
 
 		// assert
 		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
@@ -283,7 +283,7 @@ func Test_Table_InsertBuilder(t *testing.T) {
 	t.Run("Should return the right InsertBuilder", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
+		table := sut.TableUnderTest
 		expectedBuilder := table.T.InsertBuilder()
 
 		// act
@@ -298,8 +298,8 @@ func Test_Table_Update(t *testing.T) {
 	t.Run("Should return the right Update", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
-		columns := makeGocqlxMetadataSut().columns
+		table := sut.TableUnderTest
+		columns := makeGocqlxMetadataSut().Columns
 		expectedStmt, expectedNames := table.T.Update(columns...)
 
 		// act
@@ -315,13 +315,13 @@ func Test_Table_UpdateQuery(t *testing.T) {
 	t.Run("Should return the right UpdateQuery", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
-		columns := makeGocqlxMetadataSut().columns
+		table := sut.TableUnderTest
+		columns := makeGocqlxMetadataSut().Columns
 		session := makeSessionSut()
-		expectedQueryx := table.T.UpdateQuery(*session.session.S, columns...)
+		expectedQueryx := table.T.UpdateQuery(*session.Session.S, columns...)
 
 		// act
-		resultQueryx := table.UpdateQuery(session.session, columns...)
+		resultQueryx := table.UpdateQuery(session.Session, columns...)
 
 		// assert
 		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
@@ -332,14 +332,14 @@ func Test_Table_UpdateQueryContext(t *testing.T) {
 	t.Run("Should return the right UpdateQueryContext", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
-		columns := makeGocqlxMetadataSut().columns
+		table := sut.TableUnderTest
+		columns := makeGocqlxMetadataSut().Columns
 		session := makeSessionSut()
 		ctx := context.Background()
-		expectedQueryx := table.T.UpdateQueryContext(ctx, *session.session.S, columns...)
+		expectedQueryx := table.T.UpdateQueryContext(ctx, *session.Session.S, columns...)
 
 		// act
-		resultQueryx := table.UpdateQueryContext(ctx, session.session, columns...)
+		resultQueryx := table.UpdateQueryContext(ctx, session.Session, columns...)
 
 		// assert
 		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
@@ -350,7 +350,7 @@ func Test_Table_UpdateBuilder(t *testing.T) {
 	t.Run("Should return the right UpdateBuilder", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
+		table := sut.TableUnderTest
 		expectedBuilder := table.T.UpdateBuilder()
 
 		// act
@@ -365,8 +365,8 @@ func Test_Table_Delete(t *testing.T) {
 	t.Run("Should return the right Delete", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
-		columns := makeGocqlxMetadataSut().columns
+		table := sut.TableUnderTest
+		columns := makeGocqlxMetadataSut().Columns
 		expectedStmt, expectedNames := table.T.Delete(columns...)
 
 		// act
@@ -382,13 +382,13 @@ func Test_Table_DeleteQuery(t *testing.T) {
 	t.Run("Should return the right DeleteQuery", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
-		columns := makeGocqlxMetadataSut().columns
+		table := sut.TableUnderTest
+		columns := makeGocqlxMetadataSut().Columns
 		session := makeSessionSut()
-		expectedQueryx := table.T.DeleteQuery(*session.session.S, columns...)
+		expectedQueryx := table.T.DeleteQuery(*session.Session.S, columns...)
 
 		// act
-		resultQueryx := table.DeleteQuery(session.session, columns...)
+		resultQueryx := table.DeleteQuery(session.Session, columns...)
 
 		// assert
 		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
@@ -399,14 +399,14 @@ func Test_Table_DeleteQueryContext(t *testing.T) {
 	t.Run("Should return the right DeleteQueryContext", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
-		columns := makeGocqlxMetadataSut().columns
+		table := sut.TableUnderTest
+		columns := makeGocqlxMetadataSut().Columns
 		session := makeSessionSut()
 		ctx := context.Background()
-		expectedQueryx := table.T.DeleteQueryContext(ctx, *session.session.S, columns...)
+		expectedQueryx := table.T.DeleteQueryContext(ctx, *session.Session.S, columns...)
 
 		// act
-		resultQueryx := table.DeleteQueryContext(ctx, session.session, columns...)
+		resultQueryx := table.DeleteQueryContext(ctx, session.Session, columns...)
 
 		// assert
 		assert.Equal(t, expectedQueryx, resultQueryx.(*igocqlx.Queryx).Q)
@@ -417,7 +417,7 @@ func Test_Table_DeleteBuilder(t *testing.T) {
 	t.Run("Should return the right DeleteBuilder", func(t *testing.T) {
 		// arrange
 		sut := makeTableSut()
-		table := sut.tableUnderTest
+		table := sut.TableUnderTest
 		expectedBuilder := table.T.DeleteBuilder()
 
 		// act
@@ -431,41 +431,41 @@ func Test_Table_DeleteBuilder(t *testing.T) {
 /* ============= SUT helpers ============ */
 
 type tableSut struct {
-	metadataUnderTest *Metadata
-	tableUnderTest    *Table
+	MetadataUnderTest *Metadata
+	TableUnderTest    *Table
 }
 
 func makeTableSut() tableSut {
 	metadataUnderTest := &Metadata{
-		M: makeGocqlxMetadataSut().sut,
+		M: makeGocqlxMetadataSut().Sut,
 	}
 
 	tableUnderTest := &Table{
-		T: makeGocqlxTableSut().sut,
+		T: makeGocqlxTableSut().Sut,
 	}
 
 	return tableSut{
-		metadataUnderTest,
-		tableUnderTest,
+		MetadataUnderTest: metadataUnderTest,
+		TableUnderTest:    tableUnderTest,
 	}
 }
 
 type sessionSut struct {
-	session *igocqlx.Session
+	Session *igocqlx.Session
 }
 
 func makeSessionSut() sessionSut {
 	gocqlxsession := makeGocqlxSessionSut()
 
 	return sessionSut{
-		session: &igocqlx.Session{
-			S: gocqlxsession.sut,
+		Session: &igocqlx.Session{
+			S: gocqlxsession.Sut,
 		},
 	}
 }
 
 type sessionGocqlxSut struct {
-	sut *gocqlx.Session
+	Sut *gocqlx.Session
 }
 
 func makeGocqlxSessionSut() sessionGocqlxSut {
@@ -474,29 +474,29 @@ func makeGocqlxSessionSut() sessionGocqlxSut {
 	}
 
 	return sessionGocqlxSut{
-		sut,
+		Sut: sut,
 	}
 }
 
 type tableGocqlxSut struct {
-	sut *table.Table
+	Sut *table.Table
 }
 
 func makeGocqlxTableSut() tableGocqlxSut {
 	metadataGocqlxSut := makeGocqlxMetadataSut()
-	sut := table.New(*metadataGocqlxSut.sut)
+	sut := table.New(*metadataGocqlxSut.Sut)
 
 	return tableGocqlxSut{
-		sut,
+		Sut: sut,
 	}
 }
 
 type metadataGocqlxSut struct {
-	name    string
-	columns []string
-	partKey []string
-	sortKey []string
-	sut     *table.Metadata
+	Name    string
+	Columns []string
+	PartKey []string
+	SortKey []string
+	Sut     *table.Metadata
 }
 
 func makeGocqlxMetadataSut() metadataGocqlxSut {
@@ -516,10 +516,10 @@ func makeGocqlxMetadataSut() metadataGocqlxSut {
 	}
 
 	return metadataGocqlxSut{
-		name,
-		columns,
-		partKey,
-		sortKey,
-		sut,
+		Name:    name,
+		Columns: columns,
+		PartKey: partKey,
+		SortKey: sortKey,
+		Sut:     sut,
 	}
 }
