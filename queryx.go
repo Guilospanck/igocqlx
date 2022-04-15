@@ -2,11 +2,8 @@ package igocqlx
 
 import (
 	"context"
-	"fmt"
-	"reflect"
 
 	"github.com/gocql/gocql"
-	"github.com/scylladb/go-reflectx"
 	"github.com/scylladb/gocqlx/v2"
 )
 
@@ -280,35 +277,4 @@ func (q *Queryx) Release() {
 
 func (q *Queryx) Scan(dest ...interface{}) error {
 	return q.Q.Scan(dest...)
-}
-
-func (q *Queryx) bindStructArgs(arg0 interface{}, arg1 map[string]interface{}) ([]interface{}, error) {
-	arglist := make([]interface{}, 0, len(q.Q.Names))
-
-	// grab the indirected value of arg
-	v := reflect.ValueOf(arg0)
-	for v = reflect.ValueOf(arg0); v.Kind() == reflect.Ptr; {
-		v = v.Elem()
-	}
-
-	err := q.Q.Mapper.TraversalsByNameFunc(v.Type(), q.Q.Names, func(i int, t []int) error {
-		if len(t) != 0 {
-			val := reflectx.FieldByIndexesReadOnly(v, t) // nolint:scopelint
-			arglist = append(arglist, val.Interface())
-		} else {
-			val, ok := arg1[q.Q.Names[i]]
-			if !ok {
-				return fmt.Errorf("could not find name %q in %#v and %#v", q.Q.Names[i], arg0, arg1)
-			}
-			arglist = append(arglist, val)
-		}
-
-		// if q.Q.tr != nil {
-		// 	arglist[i] = q.Q.tr(q.Q.Names[i], arglist[i])
-		// }
-
-		return nil
-	})
-
-	return arglist, err
 }

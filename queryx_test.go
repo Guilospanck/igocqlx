@@ -1,110 +1,123 @@
 package igocqlx
 
 import (
-	"reflect"
 	"testing"
-	"unsafe"
 
+	"github.com/gocql/gocql"
 	"github.com/scylladb/gocqlx/v2"
 	"github.com/stretchr/testify/assert"
 )
 
+func Test_Queryx_WithBindTransformer(t *testing.T) {
+	t.Run("Should call WithBindTransformer and return proper result", func(t *testing.T) {
+		// arrange
+		sut := makeQueryxSut()
+		query := sut.Queryx
+		tr := func(name string, val interface{}) interface{} { return val }
+		expectedQuery := query.Q.WithBindTransformer(tr)
+
+		// act
+		resultQuery := query.WithBindTransformer(tr)
+
+		// assert
+		assert.Equal(t, expectedQuery, resultQuery.(*Queryx).Q)
+	})
+}
+
+func Test_Queryx_BindStruct(t *testing.T) {
+	t.Run("Should call BindStruct and return proper result", func(t *testing.T) {
+		// arrange
+		sut := makeQueryxSut()
+		query := sut.Queryx
+		expectedQuery := query.Q.BindStruct(sut.completeData)
+
+		// act
+		resultQuery := query.BindStruct(sut.completeData)
+
+		// assert
+		assert.Equal(t, expectedQuery, resultQuery.(*Queryx).Q)
+	})
+}
+
+func Test_Queryx_BindStructMap(t *testing.T) {
+	t.Run("Should call BindStructMap and return proper result", func(t *testing.T) {
+		// arrange
+		sut := makeQueryxSut()
+		query := sut.Queryx
+		expectedQuery := query.Q.BindStructMap(sut.completeData, nil)
+
+		// act
+		resultQuery := query.BindStructMap(sut.completeData, nil)
+
+		// assert
+		assert.Equal(t, expectedQuery, resultQuery.(*Queryx).Q)
+	})
+}
+
+/* ============= SUT helpers ============ */
 type TrackingDataEntity struct {
 	FirstName string `db:"first_name"`
 	LastName  string `db:"last_name"`
 	Location  string `db:"location"`
 }
 
-func makeArg() *TrackingDataEntity {
-	return &TrackingDataEntity{
+type queryxSut struct {
+	Queryx       *Queryx
+	completeData *TrackingDataEntity
+}
+
+func makeQueryxSut() queryxSut {
+	completeDataEntity := &TrackingDataEntity{
 		FirstName: "Guilherme",
 		LastName:  "Rodrigues",
 		Location:  "Brazil",
 	}
-}
 
-func makeArgArrayInterface() []interface{} {
-	return []interface{}{
-		"Guilherme",
-		"Rodrigues",
-		"Brazil",
+	gocqlxsession := makeGocqlxQueryxSut()
+
+	return queryxSut{
+		Queryx: &Queryx{
+			Q: gocqlxsession.Sut,
+		},
+		completeData: completeDataEntity,
 	}
 }
 
-func GetUnexportedField(field reflect.Value) interface{} {
-	return reflect.NewAt(field.Type(), unsafe.Pointer(field.UnsafeAddr())).Elem().Interface()
+type queryxGocqlxSut struct {
+	Sut *gocqlx.Queryx
 }
 
-func Test_Queryx_WithBindTransformer(t *testing.T) {
-	t.Run("Should call WithBindTransformer and perform right actions", func(t *testing.T) {
-		// arrange
-		sut := makeQueryxStruct()
-		arg := makeArg()
-
-		// act
-		result := sut.query.WithBindTransformer(sut.tr)
-		args, err := result.(*Queryx).bindStructArgs(arg, nil)
-
-		/* Getting private field from struct */
-		queryInsideResult := result.(*Queryx).Q
-		field := reflect.ValueOf(queryInsideResult).Elem().FieldByName("tr")
-		unexportedTr := GetUnexportedField(field)
-
-		// assert
-		assert.IsType(t, sut.tr, unexportedTr)
-		assert.Equal(t, sut.query, result)
-
-		assert.NoError(t, err)
-		assert.Equal(t, makeArgArrayInterface(), args)
-	})
-}
-
-func Test_Queryx_BindStruct(t *testing.T) {
-	t.Run("Should call Test_Queryx_BindStruct and perform right actions", func(t *testing.T) {
-		// arrange
-		sut := makeQueryxStruct()
-		arg := makeArg()
-
-		// act
-		result, err := sut.query.bindStructArgs(arg, nil)
-
-		// assert
-		assert.NoError(t, err)
-		assert.Equal(t, makeArgArrayInterface(), result)
-	})
-}
-
-type queryxStruct struct {
-	query       *Queryx
-	gocqlxquery *gocqlx.Queryx
-	tr          gocqlx.Transformer
-
-	stmt  string
-	names []string
-}
-
-func makeQueryxStruct() queryxStruct {
-	tr := func(name string, val interface{}) interface{} { return val }
-
-	stmt := `INSERT INTO tracking_data (first_name,last_name,location) VALUES (?,?,?) `
+func makeGocqlxQueryxSut() queryxGocqlxSut {
 	names := []string{"first_name", "last_name", "location"}
 
-	query := makeQuery(names)
-	gocqlxquery := query.Q
+	sut := &gocqlx.Queryx{
+		Query:  &gocql.Query{},
+		Names:  names,
+		Mapper: gocqlx.DefaultMapper,
+	}
 
-	return queryxStruct{
-		query,
-		gocqlxquery,
-		tr,
-		stmt,
-		names,
+	return queryxGocqlxSut{
+		Sut: sut,
 	}
 }
 
-func makeQuery(names []string) *Queryx {
-	gocqlxquery := gocqlx.Query(nil, names)
+type metadataGocqlxSut struct {
+	Name    string
+	Columns []string
+	PartKey []string
+	SortKey []string
+}
 
-	return &Queryx{
-		Q: gocqlxquery,
+func makeGocqlxMetadataSut() metadataGocqlxSut {
+	name := "tracking_data"
+	columns := []string{"first_name", "last_name", "location"}
+	partKey := []string{"first_name", "last_name"}
+	sortKey := []string{"location"}
+
+	return metadataGocqlxSut{
+		Name:    name,
+		Columns: columns,
+		PartKey: partKey,
+		SortKey: sortKey,
 	}
 }
