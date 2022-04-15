@@ -1,4 +1,4 @@
-# igocqlx
+# igocqlx [![Go Report Card](https://goreportcard.com/badge/github.com/Guilospanck/igocqlx)](https://goreportcard.com/report/github.com/Guilospanck/igocqlx) [![CircleCI](https://circleci.com/gh/Guilospanck/igocqlx/tree/main.svg?style=svg)](https://circleci.com/gh/Guilospanck/igocqlx/tree/main)
 Gocqlx with interfaces.
 
 `igocqlx` has (almost, to be continued) functions as `gocqlx` but provides interfaces to wrap functions from the package.
